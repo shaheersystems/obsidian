@@ -8,6 +8,7 @@ import {
   PlusIcon,
 } from "@radix-ui/react-icons";
 import DataTable from "../components/DataTable";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 function Jobs() {
   const people = [
@@ -81,35 +82,115 @@ function Jobs() {
   ];
 
   const headings = [
-    "Job ID",
-    "Job Name",
-    "Status",
-    "User",
-    "Project",
-    "Total Runtime",
-    "Creation Time",
-    "Type",
-    "GPU Utilization",
-    "Used GPU",
-    "Image",
-    "Node(s)",
-    "Node Pool",
-    "Total Wait Time",
-    "Completion Time",
-    "Requested GPUs",
-    "Allocated GPUs",
-    "Used GPU Memory",
-    "Allocated GPU memory",
-    "Service URL",
-    "Used Swap CPU Memory",
-    "Parallelism",
-    "Completion",
-    "Pending Pods",
-    "Running Pods",
-    "Succeeded Pods",
-    "Failed Pods",
-    "Distributed",
+    {
+      heading: "Job ID",
+      key: "id",
+    },
+    {
+      heading: "Job Name",
+      key: "job_name",
+    },
+    { heading: "Status", key: "status" },
+    { heading: "User", key: "user" },
+    {
+      heading: "Project",
+      key: "project",
+    },
+    {
+      heading: "Total Runtime",
+      key: "runtime",
+    },
+    {
+      heading: "Creation Time",
+      key: "creation_time",
+    },
+    {
+      heading: "Type",
+      key: "type",
+    },
+    { heading: "GPU Utilization", key: "gpu_utilization" },
+    { heading: "Used GPU", key: "used_gpu" },
+    { heading: "Image", key: "image" },
+    { heading: "Node(s)", key: "nodes" },
+    { heading: "Node Pool", key: "node_pool" },
+    {
+      heading: "Total Wait Time",
+      key: "waittime",
+    },
+    { heading: "Completion Time", key: "completion_time" },
+    {
+      heading: "Requested GPUs",
+      key: "requested_gpus",
+    },
+    { heading: "Allocated GPUs", key: "allocated_gpus" },
+    { heading: "Used GPU Memory", key: "used_gpu_memory" },
+    { heading: "Allocated GPU memory", key: "allocated_gpu_memory" },
+    { heading: "Service URL", key: "service_url" },
+    { heading: "Used Swap CPU Memory", key: "used_swap_cpu_memory" },
+    { heading: "Parallelism", key: "parallelism" },
+    { heading: "Completions", key: "completions" },
+    { heading: "Pending Pods", key: "pending_pods" },
+    { heading: "Running Pods", key: "running_pods" },
+    { heading: "Succeeded Pods", key: "succeeded_pods" },
+    { heading: "Failed Pods", key: "failed_pods" },
+    { heading: "Distributed", key: "distributed" },
   ];
+
+  const [showing, setShowing] = useState(false);
+  const [selectedHeadings, setSelectedHeadings] = useState([
+    {
+      heading: "Job ID",
+      key: "id",
+    },
+    {
+      heading: "Job Name",
+      key: "job_name",
+    },
+    { heading: "Status", key: "status" },
+    { heading: "User", key: "user" },
+    {
+      heading: "Project",
+      key: "project",
+    },
+    {
+      heading: "Total Runtime",
+      key: "runtime",
+    },
+    {
+      heading: "Creation Time",
+      key: "creation_time",
+    },
+    {
+      heading: "Type",
+      key: "type",
+    },
+    { heading: "GPU Utilization", key: "gpu_utilization" },
+    { heading: "Used GPU", key: "used_gpu" },
+    { heading: "Image", key: "image" },
+    { heading: "Node(s)", key: "nodes" },
+    { heading: "Node Pool", key: "node_pool" },
+    {
+      heading: "Total Wait Time",
+      key: "waittime",
+    },
+  ]);
+
+  const toggleHeading = (heading) => {
+    // Check if the heading is already in the selectedHeadings array
+    const headingIndex = selectedHeadings.findIndex(
+      (selected) => selected.key === heading.key
+    );
+
+    if (headingIndex === -1) {
+      // If not found, add the heading to selectedHeadings
+      setSelectedHeadings([...selectedHeadings, heading]);
+    } else {
+      // If found, remove the heading from selectedHeadings
+      const updatedSelectedHeadings = [...selectedHeadings];
+      updatedSelectedHeadings.splice(headingIndex, 1);
+      setSelectedHeadings(updatedSelectedHeadings);
+    }
+  };
 
   return (
     <div>
@@ -131,7 +212,7 @@ function Jobs() {
         <div className="flex justify-end flex-1 gap-4 item-center">
           <Listbox value={selected} onChange={setSelected}>
             <div className="relative mt-1">
-              <Listbox.Button className="relative w-full px-6 py-2 pr-10 text-left text-white bg-blue-900 rounded-lg cursor-default focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+              <Listbox.Button className="relative w-full px-6 py-2 pr-10 text-left text-white bg-gray-900 rounded cursor-default focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                 <span className="block truncate">{selected.name}</span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <ChevronDownIcon
@@ -178,10 +259,44 @@ function Jobs() {
             <PlusIcon className="w-5 h-5 text-gray-600" />
             <span className="font-semibold uppercase">New Job</span>
           </button>
+          <div className="relative">
+            <button
+              onClick={() => setShowing(!showing)}
+              className="p-2 rounded-full hover:bg-gray-100"
+            >
+              <Cog6ToothIcon className="w-5 h-5 text-gray-600" />
+            </button>
+            {showing && (
+              <div className="absolute right-0 w-48 overflow-y-scroll bg-white shadow-lg h-96">
+                {headings.map((heading, idx) => {
+                  return (
+                    <button
+                      onClick={() => toggleHeading(heading)}
+                      key={idx}
+                      className="flex items-center justify-between w-full px-3 py-2 text-sm text-left text-gray-500 truncate border-b word-break hover:bg-gray-100"
+                    >
+                      {heading.heading.length > 11 ? ( // if heading is longer than 20 characters, truncate it
+                        <span className="truncate">{heading.heading}</span>
+                      ) : (
+                        <span>{heading.heading}</span>
+                      )}
+                      {selectedHeadings.some(
+                        (selected) => selected.key === heading.key
+                      ) && <CheckIcon className="w-5 h-5 text-gray-600" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div>
-        <DataTable jobs={jobs} headings={headings} />
+        <DataTable
+          selectedHeadings={selectedHeadings}
+          jobs={jobs}
+          headings={headings}
+        />
       </div>
     </div>
   );
