@@ -76,6 +76,7 @@ function Jobs() {
       failed_pods: 0,
       distributed: false,
     },
+
     // Add more objects with different data as needed
   ];
 

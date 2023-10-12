@@ -22,7 +22,7 @@ function DataTable({ jobs, headings }) {
                     <th
                       key={idx}
                       scope="col"
-                      className="py-3.5 truncate pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                      className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
                     >
                       {heading}
                     </th>
@@ -71,6 +71,51 @@ function DataTable({ jobs, headings }) {
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
                     {job.node_pool}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.waittime}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.completion_time}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.requested_gpus}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.allocated_gpus}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.used_gpu_memory}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.allocated_gpu_memory}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.service_url}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.used_swap_cpu_memory}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.parallelism}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.completions}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.pending_pods}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.running_pods}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.succeeded_pods}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.failed_pods}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+                    {job.distrubted ? "True" : "False"}
                   </td>
                 </tr>
               ))}
