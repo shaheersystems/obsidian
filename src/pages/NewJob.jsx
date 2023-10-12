@@ -12,7 +12,7 @@ function NewJob() {
       <div>
         <Tabs.Root>
           <Tabs.List>
-            <div className="flex flex-row justify-center items-center w-1/6 h-6 m-auto">
+            <div className="flex flex-row items-center justify-center w-1/6 h-6 m-auto">
 
               <Tabs.Trigger
                 className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative  outline-none cursor-default"
@@ -85,7 +85,7 @@ function NewJob() {
               />
             </fieldset>
 
-            <div className="flex flex-row pt-3 w-6/12 justify-between">
+            <div className="flex flex-row justify-between w-6/12 pt-3">
               <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                 Distributed Training (MPI)
               </label>
@@ -98,7 +98,7 @@ function NewJob() {
               </Switch.Root>
 
             </div>
-            <div className="flex flex-row pt-3 w-6/12 justify-between">
+            <div className="flex flex-row justify-between w-6/12 pt-3">
               <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                 Jupyter notebook
               </label>
@@ -112,7 +112,7 @@ function NewJob() {
 
             </div>
 
-            <div className="flex flex-row pt-3 w-6/12 justify-between">
+            <div className="flex flex-row justify-between w-6/12 pt-3">
               <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                 TensorBoard
               </label>
@@ -134,7 +134,7 @@ function NewJob() {
                 collapsible
               >
                 <Accordion.Item value="item-1">
-                  <Accordion.Trigger className=" w-full">
+                  <Accordion.Trigger className="w-full ">
                     <div className="flex flex-row justify-start">
                       <div className="pr-2">
                         <ChevronDownIcon className="w-5 h-5" />
@@ -227,7 +227,7 @@ function NewJob() {
                         />
                       </fieldset>
 
-                      <div className="flex flex-row pt-3 w-5/12 justify-between">
+                      <div className="flex flex-row justify-between w-5/12 pt-3">
                         <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Large SHM
                         </label>
@@ -248,7 +248,7 @@ function NewJob() {
                 </Accordion.Item>
 
                 <Accordion.Item value="item-2">
-                  <Accordion.Trigger className=" w-full">
+                  <Accordion.Trigger className="w-full ">
                     <div className="flex flex-row justify-start">
                       <div className="pr-2">
                         <ChevronDownIcon className="w-5 h-5" />
@@ -333,7 +333,7 @@ function NewJob() {
 
                       </fieldset>
 
-                      <div className="flex flex-row pt-3 w-5/12 justify-between">
+                      <div className="flex flex-row justify-between w-5/12 pt-3">
                         <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Override UID & GID
                         </label>
@@ -359,7 +359,7 @@ function NewJob() {
 
                       </fieldset>
 
-                      <div className="flex flex-row pt-3 w-5/12 justify-between">
+                      <div className="flex flex-row justify-between w-5/12 pt-3">
                         <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Set Stdin
                         </label>
@@ -373,7 +373,7 @@ function NewJob() {
 
                       </div>
 
-                      <div className="flex flex-row pt-3 w-5/12 justify-between">
+                      <div className="flex flex-row justify-between w-5/12 pt-3">
                         <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Allocate TTY
                         </label>
@@ -387,7 +387,7 @@ function NewJob() {
 
                       </div>
 
-                      <div className="flex flex-row pt-3 w-5/12 justify-between">
+                      <div className="flex flex-row justify-between w-5/12 pt-3">
                         <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Working Directory Path
                         </label>
@@ -401,7 +401,7 @@ function NewJob() {
 
                       </div>
 
-                      <div className="flex flex-row pt-3 w-5/12 justify-between">
+                      <div className="flex flex-row justify-between w-5/12 pt-3">
                         <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Create Home Directory
                         </label>
@@ -414,7 +414,7 @@ function NewJob() {
                         </Switch.Root>
 
                       </div>
-                      <div className="flex flex-row pt-3 w-5/12 justify-between">
+                      <div className="flex flex-row justify-between w-5/12 pt-3">
                         <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Host IPC
                         </label>
@@ -427,7 +427,7 @@ function NewJob() {
                         </Switch.Root>
 
                       </div>
-                      <div className="flex flex-row pt-3 w-5/12 justify-between">
+                      <div className="flex flex-row justify-between w-5/12 pt-3">
                         <label className="pr-6 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Host Network
                         </label>
