@@ -52,7 +52,7 @@ function AppLayout({ children }) {
             })}
           </div>
         </aside>
-        <main className="flex-1 p-4">{children}</main>
+        <main className="w-full p-4">{children}</main>
       </div>
     </div>
   );
