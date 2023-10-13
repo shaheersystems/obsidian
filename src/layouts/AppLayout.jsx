@@ -17,24 +17,17 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
-  Cog6ToothIcon,
   DocumentDuplicateIcon,
-  FolderIcon,
   HomeIcon,
-  UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import {
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { Link, useLocation } from "react-router-dom";
+import Dropdown from "../components/Dropdown";
 
 const navigation = [
-  { name: "Overview", href: "#", icon: HomeIcon, current: false },
-  { name: "Jobs", href: "/jobs", icon: DocumentDuplicateIcon, current: true },
+  { name: "Overview", href: "/", icon: HomeIcon },
+  { name: "Jobs", href: "/jobs", icon: DocumentDuplicateIcon },
 ];
 const userNavigation = [
   { name: "Your profile", href: "#" },
@@ -47,7 +40,14 @@ function classNames(...classes) {
 
 export default function AppLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { pathname } = useLocation();
+  const clusters = [
+    { id: 1, name: "sensei-eks01-prod-cluster" },
+    { id: 1, name: "sensei-eks02-prod-cluster" },
+  ];
+  const [selected, setSelected] = useState(clusters[0]);
 
+  console.log(pathname);
   return (
     <>
       <div>
@@ -161,10 +161,10 @@ export default function AppLayout({ children }) {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
+                        <Link
+                          to={item.href}
                           className={classNames(
-                            item.current
+                            pathname === item.href
                               ? "bg-gray-800 text-white"
                               : "text-gray-400 hover:text-white hover:bg-gray-800",
                             "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
@@ -175,7 +175,7 @@ export default function AppLayout({ children }) {
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -202,7 +202,26 @@ export default function AppLayout({ children }) {
               aria-hidden="true"
             />
 
-            <div className="flex self-stretch justify-end flex-1 gap-x-4 lg:gap-x-6">
+            <div className="flex items-center self-stretch justify-between flex-1 gap-x-4 lg:gap-x-6">
+              <div>
+                <h2 className="text-2xl font-semibold text-white">
+                  {pathname === "/"
+                    ? "Overview"
+                    : pathname === "/jobs"
+                    ? "Jobs"
+                    : pathname === "/jobs/new-job"
+                    ? "New Job"
+                    : "Page not found"}
+                </h2>
+              </div>
+              <div className="flex items-center">
+                <span className="text-gray-200">Cluster: </span>
+                <Dropdown
+                  data={clusters}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </div>
               <div className="flex items-center gap-x-4 lg:gap-x-6">
                 <button
                   type="button"
