@@ -1,6 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 
 function DataTable({ jobs, selectedHeadings }) {
+  const [sortColumn, setSortColumn] = useState("");
+  const [sortDirection, setSortDirection] = useState("asc");
+
+  const handleSort = (key) => {
+    if (key === sortColumn) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(key);
+      setSortDirection("asc");
+    }
+  };
+
+  const sortedData = [...jobs].sort((a, b) => {
+    const aValue = a[sortColumn];
+    const bValue = b[sortColumn];
+
+    if (sortDirection === "asc") {
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return aValue - bValue;
+      } else {
+        // Handle non-numeric values (e.g., strings) by comparing them as strings
+        return String(aValue).localeCompare(String(bValue));
+      }
+    } else {
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return bValue - aValue;
+      } else {
+        // Handle non-numeric values (e.g., strings) by comparing them as strings
+        return String(bValue).localeCompare(String(aValue));
+      }
+    }
+  });
+
   return (
     <div className="flow-root mt-8">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -15,14 +48,28 @@ function DataTable({ jobs, selectedHeadings }) {
                       scope="col"
                       className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
                     >
-                      {heading.heading}
+                      <button
+                        className="flex items-center gap-2"
+                        onClick={() => handleSort(heading.key)}
+                      >
+                        {heading.heading}
+                        {sortColumn === heading.key && (
+                          <span>
+                            {sortDirection === "asc" ? (
+                              <span className="ml-1">▼</span>
+                            ) : (
+                              <span className="ml-1">▲</span>
+                            )}
+                          </span>
+                        )}
+                      </button>
                     </th>
                   );
                 })}
               </tr>
             </thead>
             <tbody className="divide-y h-[60vh] overflow-y-auto divide-gray-200">
-              {jobs.map((job) => {
+              {sortedData.map((job) => {
                 return (
                   <tr key={job.jobId} className="hover:bg-gray-100">
                     {selectedHeadings.map((heading, idx) => {
