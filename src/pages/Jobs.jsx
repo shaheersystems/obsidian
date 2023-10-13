@@ -1,6 +1,6 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-
+import data from "../data/mock_data.json";
 import {
   MagnifyingGlassIcon,
   CheckIcon,
@@ -11,167 +11,107 @@ import DataTable from "../components/DataTable";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 function Jobs() {
-  const people = [
+  const [jobData, setJobData] = useState([]);
+  const [visibleItems, setVisibleItems] = useState(100);
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 100
+    ) {
+      // User has scrolled to the end, load more items
+      setVisibleItems((prevVisibleItems) => prevVisibleItems + 100);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const d = JSON.stringify(data);
+    const parsedData = JSON.parse(d);
+    setJobData(parsedData.slice(0, visibleItems));
+  }, [visibleItems]);
+
+  const jobs_timeframe = [
     { id: 1, name: "Current", current: true },
     { id: 2, name: "History" },
   ];
-  const [selected, setSelected] = useState(people[0]);
-  const jobs = [
-    {
-      id: "399499d4fg",
-      job_name: "adg-sm20",
-      status: "Running",
-      user: "example@gmail.com",
-      project: "ilo-ilm",
-      runtime: "37:43:31",
-      creation_time: "6/10/2023, 11:26",
-      type: "Interactive",
-      gpu_utilization: "100.0%",
-      used_gpu: 0.15,
-      image: "550505-docker-dmdmd.omg",
-      nodes: 5,
-      node_pool: 53,
-      waittime: "37:43:31",
-      completion_time: "6/11/2023, 01:15",
-      requested_gpus: 5,
-      allocated_gpus: 3,
-      used_gpu_memory: 512,
-      allocated_gpu_memory: 1024,
-      service_url: "https://example.com",
-      used_swap_cpu_memory: 2048,
-      parallelism: 4,
-      completions: 5,
-      pending_pods: 4,
-      running_pods: 2,
-      succeeded_pods: 4,
-      failed_pods: 1,
-      distributed: true,
-    },
-    {
-      id: "39949944fg",
-      job_name: "xyz-abc123",
-      status: "Pending",
-      user: "another@example.com",
-      project: "xyz-project",
-      runtime: "N/A",
-      creation_time: "6/10/2023, 14:45",
-      type: "Batch",
-      gpu_utilization: "N/A",
-      used_gpu: 0.0,
-      image: "123456-docker-image.omg",
-      nodes: 0,
-      node_pool: 0,
-      waittime: "N/A",
-      completion_time: "N/A",
-      requested_gpus: 0,
-      allocated_gpus: 0,
-      used_gpu_memory: 0,
-      allocated_gpu_memory: 0,
-      service_url: "https://example2.com",
-      used_swap_cpu_memory: 0,
-      parallelism: 1,
-      completions: 0,
-      pending_pods: 1,
-      running_pods: 0,
-      succeeded_pods: 0,
-      failed_pods: 0,
-      distributed: false,
-    },
-
-    // Add more objects with different data as needed
-  ];
+  const [selected, setSelected] = useState(jobs_timeframe[0]);
 
   const headings = [
     {
       heading: "Job ID",
-      key: "id",
+      key: "jobId",
+    },
+    {
+      heading: "Status",
+      key: "isActive",
     },
     {
       heading: "Job Name",
-      key: "job_name",
+      key: "name",
     },
-    { heading: "Status", key: "status" },
-    { heading: "User", key: "user" },
+    {
+      heading: "User",
+      key: "createdBy",
+    },
     {
       heading: "Project",
       key: "project",
     },
     {
-      heading: "Total Runtime",
-      key: "runtime",
-    },
-    {
       heading: "Creation Time",
-      key: "creation_time",
+      key: "created",
     },
     {
       heading: "Type",
       key: "type",
     },
-    { heading: "GPU Utilization", key: "gpu_utilization" },
-    { heading: "Used GPU", key: "used_gpu" },
-    { heading: "Image", key: "image" },
-    { heading: "Node(s)", key: "nodes" },
-    { heading: "Node Pool", key: "node_pool" },
+
     {
-      heading: "Total Wait Time",
-      key: "waittime",
+      heading: "Last Modified",
+      key: "lastModified",
     },
-    { heading: "Completion Time", key: "completion_time" },
     {
-      heading: "Requested GPUs",
-      key: "requested_gpus",
+      heading: "Last Modified By",
+      key: "lastModifiedBy",
     },
-    { heading: "Allocated GPUs", key: "allocated_gpus" },
-    { heading: "Used GPU Memory", key: "used_gpu_memory" },
-    { heading: "Allocated GPU memory", key: "allocated_gpu_memory" },
-    { heading: "Service URL", key: "service_url" },
-    { heading: "Used Swap CPU Memory", key: "used_swap_cpu_memory" },
-    { heading: "Parallelism", key: "parallelism" },
-    { heading: "Completions", key: "completions" },
-    { heading: "Pending Pods", key: "pending_pods" },
-    { heading: "Running Pods", key: "running_pods" },
-    { heading: "Succeeded Pods", key: "succeeded_pods" },
-    { heading: "Failed Pods", key: "failed_pods" },
-    { heading: "Distributed", key: "distributed" },
+    {
+      heading: "Can Evict",
+      key: "canEvict",
+    },
   ];
 
   const [showing, setShowing] = useState(false);
   const [selectedHeadings, setSelectedHeadings] = useState([
     {
       heading: "Job ID",
-      key: "id",
+      key: "jobId",
     },
     {
       heading: "Job Name",
-      key: "job_name",
+      key: "name",
     },
-    { heading: "Status", key: "status" },
-    { heading: "User", key: "user" },
+    {
+      heading: "Status",
+      key: "isActive",
+    },
+    {
+      heading: "User",
+      key: "createdBy",
+    },
     {
       heading: "Project",
       key: "project",
     },
     {
-      heading: "Total Runtime",
-      key: "runtime",
-    },
-    {
       heading: "Creation Time",
-      key: "creation_time",
-    },
-    {
-      heading: "Type",
-      key: "type",
-    },
-    { heading: "GPU Utilization", key: "gpu_utilization" },
-    { heading: "Used GPU", key: "used_gpu" },
-    { heading: "Image", key: "image" },
-    { heading: "Node(s)", key: "nodes" },
-    { heading: "Node Pool", key: "node_pool" },
-    {
-      heading: "Total Wait Time",
-      key: "waittime",
+      key: "created",
     },
   ]);
 
@@ -228,7 +168,7 @@ function Jobs() {
                 leaveTo="opacity-0"
               >
                 <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {people.map((person, personIdx) => (
+                  {jobs_timeframe.map((person, personIdx) => (
                     <Listbox.Option
                       key={personIdx}
                       className={({ active }) =>
@@ -267,7 +207,7 @@ function Jobs() {
               <Cog6ToothIcon className="w-5 h-5 text-gray-600" />
             </button>
             {showing && (
-              <div className="absolute right-0 w-48 overflow-y-scroll bg-white shadow-lg h-96">
+              <div className="absolute right-0 z-10 w-48 overflow-y-scroll bg-white shadow-lg h-96">
                 {headings.map((heading, idx) => {
                   return (
                     <button
@@ -294,7 +234,7 @@ function Jobs() {
       <div>
         <DataTable
           selectedHeadings={selectedHeadings}
-          jobs={jobs}
+          jobs={jobData}
           headings={headings}
         />
       </div>

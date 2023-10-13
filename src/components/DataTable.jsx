@@ -1,12 +1,12 @@
 import React from "react";
 
-function DataTable({ jobs, headings, selectedHeadings }) {
+function DataTable({ jobs, selectedHeadings }) {
   return (
     <div className="flow-root mt-8">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-          <table className="min-w-full divide-y divide-gray-300">
-            <thead>
+          <table className="relative min-w-full divide-y divide-gray-300">
+            <thead className="">
               <tr>
                 {selectedHeadings.map((heading, idx) => {
                   return (
@@ -21,19 +21,40 @@ function DataTable({ jobs, headings, selectedHeadings }) {
                 })}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y h-[60vh] overflow-y-auto divide-gray-200">
               {jobs.map((job) => {
                 return (
-                  <tr key={job.id}>
+                  <tr key={job.jobId} className="hover:bg-gray-100">
                     {selectedHeadings.map((heading, idx) => {
                       return (
                         <td
                           key={idx}
-                          className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap"
+                          className="py-4 text-sm text-left text-gray-500 truncate cursor-pointer hover:bg-gray-100 whitespace-nowrap"
                         >
-                          {job[heading.key].length > 11
-                            ? job[heading.key].substring(0, 11) + "..."
-                            : job[heading.key]}
+                          {heading.key !== "canEvict" &&
+                            heading.key !== "isActive" && (
+                              <span className="truncate">
+                                {
+                                  job[heading.key].length > 20
+                                    ? job[heading.key].substring(0, 11) + "..."
+                                    : job[heading.key] // if heading is longer than 20 characters, truncate it
+                                }
+                              </span>
+                            )}
+                          {heading.key === "canEvict" && (
+                            <span>{job[heading.key] ? "Yes" : "No"}</span>
+                          )}
+                          {heading.key === "isActive" && (
+                            <span
+                              className={`p-2 text-sm rounded-full ${
+                                job[heading.key]
+                                  ? "text-green-500"
+                                  : "text-red-500"
+                              }`}
+                            >
+                              {job[heading.key] ? "Running" : "Pending"}
+                            </span>
+                          )}
                         </td>
                       );
                     })}
