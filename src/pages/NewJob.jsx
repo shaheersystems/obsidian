@@ -1,11 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import * as Tabs from '@radix-ui/react-tabs';
-import * as Label from '@radix-ui/react-label';
 import * as Switch from '@radix-ui/react-switch';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { useEffect, useRef } from 'react';
+
 
 function NewJob() {
   const [nodedivs, setnodeDivs] = useState([]);
@@ -325,8 +324,6 @@ function NewJob() {
               <input
                 className="grow shrink-0 rounded px-2.5 text-[12px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[24px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
                 id="username"
-
-
               />
             </fieldset>
           </div>
@@ -468,9 +465,6 @@ function NewJob() {
     });
   };
 
-
-
-
   const addAnnotationsdivs = () => {
     setannotationsdivs((prevDivs) => [
       ...prevDivs,
@@ -564,19 +558,6 @@ function NewJob() {
     });
   };
 
-  const triggerRef = useRef();
-
-  // Function to simulate a click on the trigger
-  const triggerClick = () => {
-    if (triggerRef.current) {
-      triggerRef.current.click();
-    }
-  };
-
-  // Trigger the click event when the component mounts
-  useEffect(() => {
-    triggerClick();
-  }, []);
 
   return (
     < >
@@ -600,7 +581,9 @@ function NewJob() {
               </Tabs.Trigger>
             </div>
           </Tabs.List>
-          {/* Interactive */}
+
+          {/* Interactive Section */}
+
           <Tabs.Content value="tabInteractive" className="md:w-9/12 w-full m-auto p-6 pt-10 md:p-11 ">
 
             <div className="text-center font-bold pb-3">
@@ -702,7 +685,7 @@ function NewJob() {
 
             <div>
               <Accordion.Root
-                className="mt-3 bg-mauve6 w-full rounded-md shadow-[0_2px_10px] shadow-black/5"
+                className="mt-3 w-full rounded-md"
                 type="single"
                 defaultValue="item-1"
                 collapsible
@@ -720,7 +703,7 @@ function NewJob() {
                     </div>
                   </Accordion.Trigger>
                   <Accordion.Content>
-                    <div className="p-4 border border-slate-400 ">
+                    <div className="p-4 border border-slate-300 ">
                       {/* Add */}
                       <fieldset className="mb-[15px] w-full flex flex-col justify-start pt-3 p-15">
                         <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="Node pools">
@@ -842,7 +825,7 @@ function NewJob() {
                     </div>
                   </Accordion.Trigger>
                   <Accordion.Content>
-                    <div className="p-4 border border-slate-400 ">
+                    <div className="p-4 border border-slate-300 ">
                       <fieldset className="mb-[15px] w-full flex flex-col justify-start pt-3  p-15">
                         <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="Commad Arguments">
                           Command Arguments
@@ -1097,7 +1080,7 @@ function NewJob() {
 
                       </div>
 
-                      {/* Add */}
+                      
                       <fieldset className="mb-[15px] w-full flex flex-col justify-start pt-3  p-15">
                         <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="Public Git Repository">
                           Public Git Repository
@@ -1115,7 +1098,7 @@ function NewJob() {
 
                       </fieldset>
 
-                      {/* Add */}
+                      
                       <fieldset className="mb-[15px] w-full flex flex-col justify-start pt-3  p-15">
                         <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Tolerations
@@ -1133,7 +1116,6 @@ function NewJob() {
 
                       </fieldset>
 
-
                     </div>
 
                   </Accordion.Content>
@@ -1147,14 +1129,13 @@ function NewJob() {
                         <ChevronDownIcon className="w-5 h-5" />
                       </div>
                       <div className="">
-
                         Scheduling & Lifecycle
                       </div>
 
                     </div>
                   </Accordion.Trigger>
                   <Accordion.Content>
-                    <div className="p-4 border border-slate-400 ">
+                    <div className="p-4 border border-slate-300 ">
                       <fieldset className="mb-[15px] w-full flex flex-col justify-start pt-3  p-15">
                         <label className="text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="node type affinity">
                           Node Type Affinity
@@ -1211,7 +1192,7 @@ function NewJob() {
                     </div>
                   </Accordion.Trigger>
                   <Accordion.Content>
-                    <div className="p-4 border border-slate-400 ">
+                    <div className="p-4 border border-slate-300 ">
                       <div className="flex flex-row justify-between md:w-5/12 w-full pt-3">
                         <label className="pr-2 pt-1 text-[13px] leading-none mb-2.5 text-violet12 block" htmlFor="name">
                           Existing PVC
