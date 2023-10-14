@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import data from "../data/mock_data.json";
 import {
   MagnifyingGlassIcon,
@@ -10,6 +10,7 @@ import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import Dropdown from "../components/Dropdown";
 import FilterSelect from "../components/FilterSelect";
+import SlideOver from "../components/SlideOver";
 function Jobs() {
   const [jobData, setJobData] = useState([]);
   const [visibleItems, setVisibleItems] = useState(100);
@@ -41,6 +42,7 @@ function Jobs() {
     { id: 2, name: "History" },
   ];
   const [selected, setSelected] = useState(jobs_timeframe[0]);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const headings = [
     {
@@ -152,8 +154,16 @@ function Jobs() {
   console.log(filters);
   const [filter, setFilter] = useState(filters[0]);
   const [query, setQuery] = useState("");
+
+  const [currentJob, setCurrentJob] = useState({});
+  console.log("current job", currentJob);
   return (
     <div>
+      <SlideOver
+        job={currentJob}
+        openDrawer={openDrawer}
+        setOpenDrawer={setOpenDrawer}
+      />
       <div className="flex items-center">
         <div className="flex items-center flex-1 gap-2">
           <label
@@ -227,6 +237,9 @@ function Jobs() {
           selectedHeadings={selectedHeadings}
           jobs={jobData}
           headings={headings}
+          setCurrentJob={setCurrentJob}
+          setOpenDrawer={setOpenDrawer}
+          currentJob={currentJob}
         />
       </div>
     </div>
