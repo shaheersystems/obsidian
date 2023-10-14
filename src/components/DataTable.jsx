@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-
-function DataTable({ jobs, selectedHeadings }) {
+import { useFilter } from "../hooks/useFilter";
+function DataTable({ jobs, selectedHeadings, query, filter }) {
   const [sortColumn, setSortColumn] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
 
@@ -33,7 +33,9 @@ function DataTable({ jobs, selectedHeadings }) {
       }
     }
   });
-
+  const { filterate } = useFilter(sortedData, filter, query);
+  console.log(filterate);
+  console.log(filter);
   return (
     <div className="flow-root mt-8">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -69,7 +71,7 @@ function DataTable({ jobs, selectedHeadings }) {
               </tr>
             </thead>
             <tbody className="divide-y h-[60vh] overflow-y-auto divide-gray-200">
-              {sortedData.map((job) => {
+              {filterate.map((job) => {
                 return (
                   <tr key={job.jobId} className="hover:bg-gray-100">
                     {selectedHeadings.map((heading, idx) => {
