@@ -3,17 +3,16 @@ import data from "../data/mock_data.json";
 import {
   MagnifyingGlassIcon,
   CheckIcon,
-  ChevronDownIcon,
   PlusIcon,
 } from "@radix-ui/react-icons";
 import DataTable from "../components/DataTable";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import Dropdown from "../components/Dropdown";
+import FilterSelect from "../components/FilterSelect";
 function Jobs() {
   const [jobData, setJobData] = useState([]);
   const [visibleItems, setVisibleItems] = useState(100);
-
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
@@ -47,43 +46,53 @@ function Jobs() {
     {
       heading: "Job ID",
       key: "jobId",
+      type: "string",
     },
     {
       heading: "Status",
       key: "isActive",
+      type: "boolean",
     },
     {
       heading: "Job Name",
       key: "name",
+      type: "string",
     },
     {
       heading: "User",
       key: "createdBy",
+      type: "string",
     },
     {
       heading: "Project",
       key: "project",
+      type: "string",
     },
     {
       heading: "Creation Time",
       key: "created",
+      type: "time",
     },
     {
       heading: "Type",
       key: "type",
+      type: "string",
     },
 
     {
       heading: "Last Modified",
       key: "lastModified",
+      type: "time",
     },
     {
       heading: "Last Modified By",
       key: "lastModifiedBy",
+      type: "string",
     },
     {
       heading: "Can Evict",
       key: "canEvict",
+      type: "boolean",
     },
   ];
 
@@ -92,26 +101,32 @@ function Jobs() {
     {
       heading: "Job ID",
       key: "jobId",
-    },
-    {
-      heading: "Job Name",
-      key: "name",
+      type: "string",
     },
     {
       heading: "Status",
       key: "isActive",
+      type: "boolean",
+    },
+    {
+      heading: "Job Name",
+      key: "name",
+      type: "string",
     },
     {
       heading: "User",
       key: "createdBy",
+      type: "string",
     },
     {
       heading: "Project",
       key: "project",
+      type: "string",
     },
     {
       heading: "Creation Time",
       key: "created",
+      type: "time",
     },
   ]);
 
@@ -131,23 +146,34 @@ function Jobs() {
       setSelectedHeadings(updatedSelectedHeadings);
     }
   };
-
+  const filters = selectedHeadings.filter(
+    (heading) => heading.type === "string"
+  );
+  console.log(filters);
+  const [filter, setFilter] = useState(filters[0]);
+  const [query, setQuery] = useState("");
   return (
     <div>
       <div className="flex items-center">
-        <div className="flex-1">
+        <div className="flex items-center flex-1 gap-2">
           <label
             htmlFor="search"
-            className="flex items-center w-full gap-4 px-4 py-2 border rounded focus:ring"
+            className="flex items-center w-full gap-4 px-4 py-1.5 mt-1 border rounded focus:ring"
           >
             <MagnifyingGlassIcon className="w-5 h-5 text-gray-600" />
             <input
+              onChange={(e) => setQuery(e.target.value)}
               id="search"
-              placeholder="search..."
-              className="w-full outline-none "
+              placeholder={`Search by ${filter.heading}`}
+              className="w-full outline-none"
               type="text"
             />
           </label>
+          <FilterSelect
+            selected={filter}
+            setSelected={setFilter}
+            data={filters}
+          />
         </div>
         <div className="flex justify-end flex-1 gap-4 item-center">
           <Dropdown
@@ -196,6 +222,8 @@ function Jobs() {
       </div>
       <div>
         <DataTable
+          query={query}
+          filter={filter}
           selectedHeadings={selectedHeadings}
           jobs={jobData}
           headings={headings}
