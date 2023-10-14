@@ -6,13 +6,12 @@ import Interactive from "./Interactive";
 
 function NewJob() {
   return (
-    < >
+    <>
       <div>
         <Tabs.Root defaultValue="tabInteractive" className="w-full">
           <Tabs.List>
-            <div className="flex flex-row items-center justify-center md:w-1/6 w-full h-6 m-auto">
-
-              <Tabs.Trigger  
+            <div className="flex flex-row items-center justify-center w-full h-6 m-auto md:w-1/6">
+              <Tabs.Trigger
                 className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11  data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative  outline-none cursor-default"
                 value="tabInteractive"
               >
