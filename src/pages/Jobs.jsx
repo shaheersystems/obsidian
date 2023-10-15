@@ -4,6 +4,7 @@ import {
   MagnifyingGlassIcon,
   CheckIcon,
   PlusIcon,
+  DownloadIcon,
 } from "@radix-ui/react-icons";
 import DataTable from "../components/DataTable";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
@@ -11,6 +12,7 @@ import { Link } from "react-router-dom";
 import Dropdown from "../components/Dropdown";
 import FilterSelect from "../components/FilterSelect";
 import SlideOver from "../components/SlideOver";
+import { CSVDownload, CSVLink } from "react-csv";
 function Jobs() {
   const [jobData, setJobData] = useState([]);
   const [visibleItems, setVisibleItems] = useState(100);
@@ -225,6 +227,12 @@ function Jobs() {
                     </button>
                   );
                 })}
+                <CSVLink filename="jobs.csv" data={data}>
+                  <button className="flex items-center justify-between w-full px-3 py-2 text-sm text-left text-white truncate bg-gray-900 border-b word-break hover:bg-gray-800">
+                    <DownloadIcon className="w-4 h-4 text-gray-100" /> Export
+                    data in csv
+                  </button>
+                </CSVLink>
               </div>
             )}
           </div>

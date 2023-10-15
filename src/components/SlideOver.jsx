@@ -72,7 +72,7 @@ export default function SlideOver({ openDrawer, setOpenDrawer, job }) {
                           {job.isActive ? "Running" : "Pending"}
                         </span>
                       </div>
-                      <Tabs />
+                      <Tabs currentJob={job} />
                     </div>
                   </div>
                 </Dialog.Panel>

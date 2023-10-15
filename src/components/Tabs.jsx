@@ -1,6 +1,12 @@
 import { Tab } from "@headlessui/react";
+import GeneralTab from "./GeneralTab";
+import PodsTab from "./PodsTab";
+import StatusHistory from "./StatusHistory";
+import GraphsTab from "./GraphsTab";
+import LogsTab from "./LogsTab";
+import GPUTab from "./GPUTab";
 
-export default function Tabs() {
+export default function Tabs({ currentJob }) {
   const tabs = ["General", "Pods", "Status History", "Gpus", "Graphs", "Logs"];
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -15,7 +21,7 @@ export default function Tabs() {
                 key={idx}
                 className={({ selected }) =>
                   classNames(
-                    "py-1.5 px-4 outline-none rounded  min-w-fit text-sm font-medium leading-5 text-gray-600",
+                    "py-1.5 px-3 uppercase font-semibold outline-none rounded  min-w-fit text-sm leading-5 text-gray-600",
                     selected ? "bg-blue-500/10" : ""
                   )
                 }
@@ -26,12 +32,24 @@ export default function Tabs() {
           })}
         </Tab.List>
         <Tab.Panels className="px-6 mt-2">
-          <Tab.Panel>1</Tab.Panel>
-          <Tab.Panel>2</Tab.Panel>
-          <Tab.Panel>3</Tab.Panel>
-          <Tab.Panel>4</Tab.Panel>
-          <Tab.Panel>5</Tab.Panel>
-          <Tab.Panel>6</Tab.Panel>
+          <Tab.Panel>
+            <GeneralTab currentJob={currentJob} />
+          </Tab.Panel>
+          <Tab.Panel>
+            <PodsTab />
+          </Tab.Panel>
+          <Tab.Panel>
+            <StatusHistory />
+          </Tab.Panel>
+          <Tab.Panel>
+            <GPUTab />
+          </Tab.Panel>
+          <Tab.Panel>
+            <GraphsTab />
+          </Tab.Panel>
+          <Tab.Panel>
+            <LogsTab />
+          </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
     </div>
