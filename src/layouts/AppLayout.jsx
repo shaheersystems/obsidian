@@ -43,7 +43,7 @@ export default function AppLayout({ children }) {
   const { pathname } = useLocation();
   const clusters = [
     { id: 1, name: "sensei-eks01-prod-cluster" },
-    { id: 1, name: "sensei-eks02-prod-cluster" },
+    { id: 2, name: "sensei-eks02-prod-cluster" },
   ];
   const [selected, setSelected] = useState(clusters[0]);
 
@@ -210,6 +210,8 @@ export default function AppLayout({ children }) {
                     : pathname === "/jobs"
                     ? "Jobs"
                     : pathname === "/jobs/new-job"
+                    ? "New Job"
+                    : pathname === "/jobs/add-new-job"
                     ? "New Job"
                     : "Page not found"}
                 </h2>
