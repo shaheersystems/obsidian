@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { useFilter } from "../hooks/useFilter";
-import Dropdown from "../components/Dropdown";
+import { Disclosure } from "@headlessui/react";
 import { CheckIcon } from "@radix-ui/react-icons";
 import GroupBySelect from "./GroupBySelect";
 function DataTable({
@@ -119,15 +119,24 @@ function DataTable({
               {groupColumn &&
                 // Render grouped data
                 Object.keys(groupedData).map((key, index) => (
-                  <Fragment key={index}>
+                  <Disclosure key={index}>
                     <tr>
-                      <th colSpan="2" className="py-4 text-left">
+                      <Disclosure.Button
+                        colSpan="2"
+                        className="py-4 text-left cursor-pointer"
+                        as="th"
+                      >
                         {key}
-                      </th>
+                      </Disclosure.Button>
                     </tr>
                     {groupedData[key].map((row, rowIndex) => (
                       // Render rows within the group
-                      <tr className="hover:bg-gray-100" key={rowIndex}>
+
+                      <Disclosure.Panel
+                        className="hover:bg-gray-100"
+                        key={rowIndex}
+                        as="tr"
+                      >
                         {selectedHeadings.map((heading, idx) => {
                           return (
                             <td
@@ -163,9 +172,9 @@ function DataTable({
                             </td>
                           );
                         })}
-                      </tr>
+                      </Disclosure.Panel>
                     ))}
-                  </Fragment>
+                  </Disclosure>
                 ))}
               {!groupColumn &&
                 filterate.map((job) => {
