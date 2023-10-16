@@ -3,7 +3,6 @@ import "./App.css";
 import AppLayout from "./layouts/AppLayout";
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
-import NewJob from "./pages/NewJob";
 import AddNewJob from "./pages/AddNewJob";
 function App() {
   return (
