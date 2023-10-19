@@ -24,6 +24,7 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Link, useLocation } from "react-router-dom";
 import Dropdown from "../components/Dropdown";
+import { useCluster } from "../context/ClusterContext";
 
 const navigation = [
   { name: "Overview", href: "/", icon: HomeIcon },
@@ -41,12 +42,12 @@ function classNames(...classes) {
 export default function AppLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { pathname } = useLocation();
+  const { setCluster, cluster } = useCluster();
   const clusters = [
-    { id: 1, name: "sensei-eks01-prod-cluster" },
-    { id: 2, name: "sensei-eks02-prod-cluster" },
+    { clusterId: "sensei-eks02-stage-cluster" },
+    { clusterId: "sensei-eks03-stage-cluster" },
+    { clusterId: "sensei-eks01-stage-cluster" },
   ];
-  const [selected, setSelected] = useState(clusters[0]);
-
   console.log(pathname);
   return (
     <>
@@ -155,8 +156,9 @@ export default function AppLayout({ children }) {
                 <h1 className="text-4xl text-white">Obsidian.</h1>
               </Link>
             </div>
-            <nav className="flex flex-col flex-1">
-              <ul role="list" className="flex flex-col flex-1 gap-y-7">
+            <nav className="flex space-y-4 flex-col flex-1">
+              <p className="text-sm text-gray-300 font-semibold">Navigation</p>
+              <ul role="list" className="flex flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
@@ -176,6 +178,30 @@ export default function AppLayout({ children }) {
                           />
                           {item.name}
                         </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              </ul>
+              <p className="text-sm pt-2 text-gray-300 font-semibold">
+                Clusters
+              </p>
+              <ul>
+                <li>
+                  <ul role="list" className="-mx-2 space-y-1">
+                    {clusters.map((item) => (
+                      <li key={item.name}>
+                        <button
+                          onClick={() => setCluster(item.clusterId)}
+                          className={classNames(
+                            item.clusterId === cluster
+                              ? "bg-gray-800 text-white"
+                              : "text-gray-400 hover:text-white hover:bg-gray-800",
+                            "group px-4 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                          )}
+                        >
+                          {item.clusterId}
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -216,14 +242,7 @@ export default function AppLayout({ children }) {
                     : "Page not found"}
                 </h2>
               </div>
-              <div className="flex items-center">
-                <span className="text-gray-200">Cluster: </span>
-                <Dropdown
-                  data={clusters}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-              </div>
+
               <div className="flex items-center gap-x-4 lg:gap-x-6">
                 <button
                   type="button"

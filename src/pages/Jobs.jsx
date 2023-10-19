@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
 import data from "../data/mock_data.json";
-import {
-  MagnifyingGlassIcon,
-  CheckIcon,
-  PlusIcon,
-  DownloadIcon,
-} from "@radix-ui/react-icons";
+import { CheckIcon, PlusIcon, DownloadIcon } from "@radix-ui/react-icons";
 import DataTable from "../components/DataTable";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import Dropdown from "../components/Dropdown";
-import FilterSelect from "../components/FilterSelect";
 import SlideOver from "../components/SlideOver";
-import { CSVDownload, CSVLink } from "react-csv";
+import { CSVLink } from "react-csv";
+import { useCluster } from "../context/ClusterContext";
 function Jobs() {
   const [jobData, setJobData] = useState([]);
+  const { cluster } = useCluster();
   const [visibleItems, setVisibleItems] = useState(100);
   const handleScroll = () => {
     if (
@@ -25,7 +21,6 @@ function Jobs() {
       setVisibleItems((prevVisibleItems) => prevVisibleItems + 100);
     }
   };
-
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -35,9 +30,17 @@ function Jobs() {
 
   useEffect(() => {
     const d = JSON.stringify(data);
+    if (cluster !== "") {
+      const parsedData = JSON.parse(d);
+      const filteredData = parsedData.filter(
+        (item) => item.clusterId === cluster
+      );
+      setJobData(filteredData.slice(0, visibleItems));
+      return;
+    }
     const parsedData = JSON.parse(d);
     setJobData(parsedData.slice(0, visibleItems));
-  }, [visibleItems]);
+  }, [visibleItems, cluster]);
 
   const jobs_timeframe = [
     { id: 1, name: "Current", current: true },
@@ -97,6 +100,11 @@ function Jobs() {
       heading: "Can Evict",
       key: "canEvict",
       type: "boolean",
+    },
+    {
+      heading: "Cluster",
+      key: "clusterId",
+      type: "string",
     },
   ];
 
@@ -167,26 +175,6 @@ function Jobs() {
         setOpenDrawer={setOpenDrawer}
       />
       <div className="flex items-center">
-        <div className="flex items-center flex-1 gap-2">
-          <label
-            htmlFor="search"
-            className="flex items-center w-full gap-4 px-4 py-1.5 mt-1 border rounded focus:ring"
-          >
-            <MagnifyingGlassIcon className="w-5 h-5 text-gray-600" />
-            <input
-              onChange={(e) => setQuery(e.target.value)}
-              id="search"
-              placeholder={`Search by ${filter.heading}`}
-              className="w-full outline-none"
-              type="text"
-            />
-          </label>
-          <FilterSelect
-            selected={filter}
-            setSelected={setFilter}
-            data={filters}
-          />
-        </div>
         <div className="flex justify-end flex-1 gap-4 item-center">
           <Dropdown
             data={jobs_timeframe}

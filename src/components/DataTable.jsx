@@ -1,17 +1,7 @@
-import React, { useState, Fragment } from "react";
-import { useFilter } from "../hooks/useFilter";
+import React, { useState } from "react";
 import { Disclosure } from "@headlessui/react";
-import { CheckIcon } from "@radix-ui/react-icons";
 import GroupBySelect from "./GroupBySelect";
-function DataTable({
-  jobs,
-  selectedHeadings,
-  query,
-  filter,
-  setCurrentJob,
-  currentJob,
-  setOpenDrawer,
-}) {
+function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
   const [sortColumn, setSortColumn] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
   const cloumns = [
@@ -58,7 +48,31 @@ function DataTable({
       }
     }
   });
-  const { filterate } = useFilter(sortedData, filter, query);
+  const [searchJobId, setSearchJobId] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [searchCreatedBy, setSearchCreatedBy] = useState("");
+  const [searchProject, setSearchProject] = useState("");
+  const [searchCreated, setSearchCreated] = useState("");
+  const [searchLastModified, setSearchLastModified] = useState("");
+  const [searchLastModifiedBy, setSearchLastModifiedBy] = useState("");
+  const [searchType, setSearchType] = useState("");
+
+  const filterate = sortedData.filter((job) => {
+    return (
+      job.jobId.toLowerCase().includes(searchJobId.toLowerCase()) &&
+      job.name.toLowerCase().includes(searchName.toLowerCase()) &&
+      job.createdBy.toLowerCase().includes(searchCreatedBy.toLowerCase()) &&
+      job.project.toLowerCase().includes(searchProject.toLowerCase()) &&
+      job.created.toLowerCase().includes(searchCreated.toLowerCase()) &&
+      job.lastModified
+        .toLowerCase()
+        .includes(searchLastModified.toLowerCase()) &&
+      job.lastModifiedBy
+        .toLowerCase()
+        .includes(searchLastModifiedBy.toLowerCase()) &&
+      job.type.toLowerCase().includes(searchType.toLowerCase())
+    );
+  });
 
   const [groupColumn, setGroupColumn] = useState(""); // Column to group by
 
@@ -85,9 +99,9 @@ function DataTable({
           <table className="relative min-w-full divide-y divide-gray-300">
             <thead className="">
               <tr>
-                <th className={`${groupColumn ? "hidden" : "block"}`}>
+                {/* <th className={`${groupColumn ? "hidden" : "block"}`}>
                   <span className="sr-only">Selected</span>
-                </th>
+                </th> */}
                 {selectedHeadings.map((heading, idx) => {
                   return (
                     <th
@@ -116,6 +130,40 @@ function DataTable({
               </tr>
             </thead>
             <tbody className="overflow-y-auto divide-y divide-gray-200">
+              <tr className="">
+                {selectedHeadings.map((heading, idx) => {
+                  return (
+                    <td key={idx} className="">
+                      {heading.key !== "canEvict" &&
+                        heading.key !== "isActive" && (
+                          <input
+                            onChange={(e) => {
+                              if (heading.key === "jobId") {
+                                setSearchJobId(e.target.value);
+                              } else if (heading.key === "name") {
+                                setSearchName(e.target.value);
+                              } else if (heading.key === "createdBy") {
+                                setSearchCreatedBy(e.target.value);
+                              } else if (heading.key === "project") {
+                                setSearchProject(e.target.value);
+                              } else if (heading.key === "created") {
+                                setSearchCreated(e.target.value);
+                              } else if (heading.key === "lastModified") {
+                                setSearchLastModified(e.target.value);
+                              } else if (heading.key === "lastModifiedBy") {
+                                setSearchLastModifiedBy(e.target.value);
+                              } else if (heading.key === "type") {
+                                setSearchType(e.target.value);
+                              }
+                            }}
+                            type="text"
+                            className="py-1.5 rounded border my-2 px-4"
+                          />
+                        )}
+                    </td>
+                  );
+                })}
+              </tr>
               {groupColumn &&
                 // Render grouped data
                 Object.keys(groupedData).map((key, index) => (
@@ -149,7 +197,7 @@ function DataTable({
                                   <span className="truncate">
                                     {
                                       row[heading.key].length > 20
-                                        ? row[heading.key].substring(0, 11) +
+                                        ? row[heading.key].substring(0, 30) +
                                           "..."
                                         : row[heading.key] // if heading is longer than 20 characters, truncate it
                                     }
@@ -177,16 +225,9 @@ function DataTable({
                   </Disclosure>
                 ))}
               {!groupColumn &&
-                filterate.map((job) => {
+                filterate.map((job, idx) => {
                   return (
-                    <tr key={job.jobId} className="hover:bg-gray-100">
-                      <td>
-                        {job.jobId === currentJob.jobId && (
-                          <span className="">
-                            <CheckIcon className="w-5 h-5 text-gray-600" />
-                          </span>
-                        )}
-                      </td>
+                    <tr key={idx} className="hover:bg-gray-100">
                       {selectedHeadings.map((heading, idx) => {
                         return (
                           <td
