@@ -29,85 +29,6 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
       name: "Variance",
     },
   ];
-  useEffect(() => {
-    const avgCpu = jobs.reduce((acc, curr) => {
-      return acc + curr.jobSpec.computeSpecifications.cpu;
-    }, 0);
-    const avgMemory = jobs.reduce((acc, curr) => {
-      return acc + curr.jobSpec.computeSpecifications.memory;
-    }, 0);
-    const avgGpu = jobs.reduce((acc, curr) => {
-      return acc + curr.jobSpec.computeSpecifications.gpu;
-    }, 0);
-    const sumCpu = jobs.reduce((acc, curr) => {
-      return acc + curr.jobSpec.computeSpecifications.cpu;
-    }, 0);
-    const sumMemory = jobs.reduce((acc, curr) => {
-      return acc + curr.jobSpec.computeSpecifications.memory;
-    }, 0);
-    const sumGpu = jobs.reduce((acc, curr) => {
-      return acc + curr.jobSpec.computeSpecifications.gpu;
-    }, 0);
-    const minCpu = jobs.reduce((acc, curr) => {
-      return Math.min(acc, curr.jobSpec.computeSpecifications.cpu);
-    }, Infinity);
-    const minMemory = jobs.reduce((acc, curr) => {
-      return Math.min(acc, curr.jobSpec.computeSpecifications.memory);
-    }, Infinity);
-    const minGpu = jobs.reduce((acc, curr) => {
-      return Math.min(acc, curr.jobSpec.computeSpecifications.gpu);
-    }, Infinity);
-    const maxCpu = jobs.reduce((acc, curr) => {
-      return Math.max(acc, curr.jobSpec.computeSpecifications.cpu);
-    }, 0);
-    const maxMemory = jobs.reduce((acc, curr) => {
-      return Math.max(acc, curr.jobSpec.computeSpecifications.memory);
-    }, 0);
-    const maxGpu = jobs.reduce((acc, curr) => {
-      return Math.max(acc, curr.jobSpec.computeSpecifications.gpu);
-    }, 0);
-    const countCpu = jobs.reduce((acc, curr) => {
-      return acc + 1;
-    }, 0);
-    const countMemory = jobs.reduce((acc, curr) => {
-      return acc + 1;
-    }, 0);
-    const countGpu = jobs.reduce((acc, curr) => {
-      return acc + 1;
-    }, 0);
-    const varianceCpu = jobs.reduce((acc, curr) => {
-      return acc + Math.pow(curr.jobSpec.computeSpecifications.cpu - avgCpu, 2);
-    }, 0);
-    const varianceMemory = jobs.reduce((acc, curr) => {
-      return (
-        acc + Math.pow(curr.jobSpec.computeSpecifications.memory - avgMemory, 2)
-      );
-    }, 0);
-    const varianceGpu = jobs.reduce((acc, curr) => {
-      return acc + Math.pow(curr.jobSpec.computeSpecifications.gpu - avgGpu, 2);
-    }, 0);
-
-    setAnalytics({
-      avgCpu: avgCpu / jobs.length,
-      avgMemory: avgMemory / jobs.length,
-      avgGpu: avgGpu / jobs.length,
-      sumCpu,
-      sumMemory,
-      sumGpu,
-      minCpu,
-      minMemory,
-      minGpu,
-      maxCpu,
-      maxMemory,
-      maxGpu,
-      countCpu,
-      countMemory,
-      countGpu,
-      varianceCpu: varianceCpu / jobs.length,
-      varianceMemory: varianceMemory / jobs.length,
-      varianceGpu: varianceGpu / jobs.length,
-    });
-  }, [jobs]);
 
   const cloumns = [
     "",
@@ -178,6 +99,86 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
       job.type.toLowerCase().includes(searchType.toLowerCase())
     );
   });
+
+  useEffect(() => {
+    const avgCpu = filterate.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.cpu;
+    }, 0);
+    const avgMemory = filterate.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.memory;
+    }, 0);
+    const avgGpu = filterate.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.gpu;
+    }, 0);
+    const sumCpu = filterate.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.cpu;
+    }, 0);
+    const sumMemory = filterate.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.memory;
+    }, 0);
+    const sumGpu = filterate.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.gpu;
+    }, 0);
+    const minCpu = filterate.reduce((acc, curr) => {
+      return Math.min(acc, curr.jobSpec.computeSpecifications.cpu);
+    }, Infinity);
+    const minMemory = filterate.reduce((acc, curr) => {
+      return Math.min(acc, curr.jobSpec.computeSpecifications.memory);
+    }, Infinity);
+    const minGpu = filterate.reduce((acc, curr) => {
+      return Math.min(acc, curr.jobSpec.computeSpecifications.gpu);
+    }, Infinity);
+    const maxCpu = filterate.reduce((acc, curr) => {
+      return Math.max(acc, curr.jobSpec.computeSpecifications.cpu);
+    }, 0);
+    const maxMemory = filterate.reduce((acc, curr) => {
+      return Math.max(acc, curr.jobSpec.computeSpecifications.memory);
+    }, 0);
+    const maxGpu = filterate.reduce((acc, curr) => {
+      return Math.max(acc, curr.jobSpec.computeSpecifications.gpu);
+    }, 0);
+    const countCpu = filterate.reduce((acc, curr) => {
+      return acc + 1;
+    }, 0);
+    const countMemory = filterate.reduce((acc, curr) => {
+      return acc + 1;
+    }, 0);
+    const countGpu = filterate.reduce((acc, curr) => {
+      return acc + 1;
+    }, 0);
+    const varianceCpu = filterate.reduce((acc, curr) => {
+      return acc + Math.pow(curr.jobSpec.computeSpecifications.cpu - avgCpu, 2);
+    }, 0);
+    const varianceMemory = filterate.reduce((acc, curr) => {
+      return (
+        acc + Math.pow(curr.jobSpec.computeSpecifications.memory - avgMemory, 2)
+      );
+    }, 0);
+    const varianceGpu = filterate.reduce((acc, curr) => {
+      return acc + Math.pow(curr.jobSpec.computeSpecifications.gpu - avgGpu, 2);
+    }, 0);
+
+    setAnalytics({
+      avgCpu: avgCpu / filterate.length,
+      avgMemory: avgMemory / filterate.length,
+      avgGpu: avgGpu / filterate.length,
+      sumCpu,
+      sumMemory,
+      sumGpu,
+      minCpu,
+      minMemory,
+      minGpu,
+      maxCpu,
+      maxMemory,
+      maxGpu,
+      countCpu,
+      countMemory,
+      countGpu,
+      varianceCpu: varianceCpu / filterate.length,
+      varianceMemory: varianceMemory / filterate.length,
+      varianceGpu: varianceGpu / filterate.length,
+    });
+  }, [filterate]);
 
   const [groupColumn, setGroupColumn] = useState(""); // Column to group by
 
