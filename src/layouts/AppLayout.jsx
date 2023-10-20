@@ -156,8 +156,8 @@ export default function AppLayout({ children }) {
                 <h1 className="text-4xl text-white">Obsidian.</h1>
               </Link>
             </div>
-            <nav className="flex space-y-4 flex-col flex-1">
-              <p className="text-sm text-gray-300 font-semibold">Navigation</p>
+            <nav className="flex flex-col flex-1 space-y-4">
+              <p className="text-sm font-semibold text-gray-300">Navigation</p>
               <ul role="list" className="flex flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
@@ -183,21 +183,34 @@ export default function AppLayout({ children }) {
                   </ul>
                 </li>
               </ul>
-              <p className="text-sm pt-2 text-gray-300 font-semibold">
+              <p className="pt-2 text-sm font-semibold text-gray-300">
                 Clusters
               </p>
               <ul>
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
+                    <li>
+                      <button
+                        onClick={() => setCluster("")}
+                        className={classNames(
+                          cluster === ""
+                            ? "bg-gray-800 text-white"
+                            : "text-gray-400 hover:text-white hover:bg-gray-800",
+                          "group px-4 w-full flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                        )}
+                      >
+                        All
+                      </button>
+                    </li>
                     {clusters.map((item) => (
-                      <li key={item.name}>
+                      <li key={item.clusterId}>
                         <button
                           onClick={() => setCluster(item.clusterId)}
                           className={classNames(
                             item.clusterId === cluster
                               ? "bg-gray-800 text-white"
                               : "text-gray-400 hover:text-white hover:bg-gray-800",
-                            "group px-4 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                            "group w-full px-4 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                           )}
                         >
                           {item.clusterId}

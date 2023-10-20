@@ -1,9 +1,114 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Disclosure } from "@headlessui/react";
 import GroupBySelect from "./GroupBySelect";
+import Dropdown from "./Dropdown";
 function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
   const [sortColumn, setSortColumn] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
+  const [analytics, setAnalytics] = useState({});
+  const [currFnCPU, setCurrFnCPU] = useState({ name: "Average" });
+  const [currFnMemory, setCurrFnMemory] = useState({ name: "Average" });
+  const [currFnGPU, setCurrFnGPU] = useState({ name: "Average" });
+  const anaylticFunctions = [
+    {
+      name: "Average",
+    },
+    {
+      name: "Sum",
+    },
+    {
+      name: "Min",
+    },
+    {
+      name: "Max",
+    },
+    {
+      name: "Count",
+    },
+    {
+      name: "Variance",
+    },
+  ];
+  useEffect(() => {
+    const avgCpu = jobs.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.cpu;
+    }, 0);
+    const avgMemory = jobs.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.memory;
+    }, 0);
+    const avgGpu = jobs.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.gpu;
+    }, 0);
+    const sumCpu = jobs.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.cpu;
+    }, 0);
+    const sumMemory = jobs.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.memory;
+    }, 0);
+    const sumGpu = jobs.reduce((acc, curr) => {
+      return acc + curr.jobSpec.computeSpecifications.gpu;
+    }, 0);
+    const minCpu = jobs.reduce((acc, curr) => {
+      return Math.min(acc, curr.jobSpec.computeSpecifications.cpu);
+    }, Infinity);
+    const minMemory = jobs.reduce((acc, curr) => {
+      return Math.min(acc, curr.jobSpec.computeSpecifications.memory);
+    }, Infinity);
+    const minGpu = jobs.reduce((acc, curr) => {
+      return Math.min(acc, curr.jobSpec.computeSpecifications.gpu);
+    }, Infinity);
+    const maxCpu = jobs.reduce((acc, curr) => {
+      return Math.max(acc, curr.jobSpec.computeSpecifications.cpu);
+    }, 0);
+    const maxMemory = jobs.reduce((acc, curr) => {
+      return Math.max(acc, curr.jobSpec.computeSpecifications.memory);
+    }, 0);
+    const maxGpu = jobs.reduce((acc, curr) => {
+      return Math.max(acc, curr.jobSpec.computeSpecifications.gpu);
+    }, 0);
+    const countCpu = jobs.reduce((acc, curr) => {
+      return acc + 1;
+    }, 0);
+    const countMemory = jobs.reduce((acc, curr) => {
+      return acc + 1;
+    }, 0);
+    const countGpu = jobs.reduce((acc, curr) => {
+      return acc + 1;
+    }, 0);
+    const varianceCpu = jobs.reduce((acc, curr) => {
+      return acc + Math.pow(curr.jobSpec.computeSpecifications.cpu - avgCpu, 2);
+    }, 0);
+    const varianceMemory = jobs.reduce((acc, curr) => {
+      return (
+        acc + Math.pow(curr.jobSpec.computeSpecifications.memory - avgMemory, 2)
+      );
+    }, 0);
+    const varianceGpu = jobs.reduce((acc, curr) => {
+      return acc + Math.pow(curr.jobSpec.computeSpecifications.gpu - avgGpu, 2);
+    }, 0);
+
+    setAnalytics({
+      avgCpu: avgCpu / jobs.length,
+      avgMemory: avgMemory / jobs.length,
+      avgGpu: avgGpu / jobs.length,
+      sumCpu,
+      sumMemory,
+      sumGpu,
+      minCpu,
+      minMemory,
+      minGpu,
+      maxCpu,
+      maxMemory,
+      maxGpu,
+      countCpu,
+      countMemory,
+      countGpu,
+      varianceCpu: varianceCpu / jobs.length,
+      varianceMemory: varianceMemory / jobs.length,
+      varianceGpu: varianceGpu / jobs.length,
+    });
+  }, [jobs]);
+
   const cloumns = [
     "",
     "jobId",
@@ -99,9 +204,6 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
           <table className="relative min-w-full divide-y divide-gray-300">
             <thead className="">
               <tr>
-                {/* <th className={`${groupColumn ? "hidden" : "block"}`}>
-                  <span className="sr-only">Selected</span>
-                </th> */}
                 {selectedHeadings.map((heading, idx) => {
                   return (
                     <th
@@ -127,6 +229,24 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
                     </th>
                   );
                 })}
+                <th
+                  scope="col"
+                  className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                >
+                  <span className="flex items-center gap-2">CPU</span>
+                </th>
+                <th
+                  scope="col"
+                  className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                >
+                  <span className="flex items-center gap-2">Memory</span>
+                </th>
+                <th
+                  scope="col"
+                  className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                >
+                  <span className="flex items-center gap-2">GPU</span>
+                </th>
               </tr>
             </thead>
             <tbody className="overflow-y-auto divide-y divide-gray-200">
@@ -163,6 +283,128 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
                     </td>
                   );
                 })}
+                <td>
+                  <Dropdown
+                    data={anaylticFunctions}
+                    selected={currFnCPU}
+                    setSelected={setCurrFnCPU}
+                  />
+                </td>
+                <td>
+                  <Dropdown
+                    data={anaylticFunctions}
+                    selected={currFnMemory}
+                    setSelected={setCurrFnMemory}
+                  />
+                </td>
+                <td>
+                  <Dropdown
+                    data={anaylticFunctions}
+                    selected={currFnGPU}
+                    setSelected={setCurrFnGPU}
+                  />
+                </td>
+              </tr>
+              <tr>
+                {selectedHeadings.map((idx) => {
+                  return <td key={idx}></td>;
+                })}
+                <td className="min-w-max py-1.5 rounded my-2 px-4">
+                  {currFnCPU.name === "Average" && (
+                    <span className="font-semibold">
+                      {"Avg: " + analytics.avgCpu}
+                    </span>
+                  )}
+                  {currFnCPU.name === "Sum" && (
+                    <span className="font-semibold">
+                      {"Sum: " + analytics.sumCpu}
+                    </span>
+                  )}
+                  {currFnCPU.name === "Min" && (
+                    <span className="font-semibold">
+                      {"Min: " + analytics.minCpu}
+                    </span>
+                  )}
+                  {currFnCPU.name === "Max" && (
+                    <span className="font-semibold">
+                      {"Max: " + analytics.maxCpu}
+                    </span>
+                  )}
+                  {currFnCPU.name === "Count" && (
+                    <span className="font-semibold">
+                      {"Count: " + analytics.countCpu}
+                    </span>
+                  )}
+                  {currFnCPU.name === "Variance" && (
+                    <span className="font-semibold">
+                      {"Var: " + analytics.varianceCpu}
+                    </span>
+                  )}
+                </td>
+                <td className="min-w-max py-1.5 rounded my-2 px-4">
+                  {currFnMemory.name === "Average" && (
+                    <span className="font-semibold">
+                      {"Avg: " + analytics.avgMemory}
+                    </span>
+                  )}
+                  {currFnMemory.name === "Sum" && (
+                    <span className="font-semibold">
+                      {"Sum: " + analytics.sumMemory}
+                    </span>
+                  )}
+                  {currFnMemory.name === "Min" && (
+                    <span className="font-semibold">
+                      {"Min: " + analytics.minMemory}
+                    </span>
+                  )}
+                  {currFnMemory.name === "Max" && (
+                    <span className="font-semibold">
+                      {"Max: " + analytics.maxMemory}
+                    </span>
+                  )}
+                  {currFnMemory.name === "Count" && (
+                    <span className="font-semibold">
+                      {"Count: " + analytics.countMemory}
+                    </span>
+                  )}
+                  {currFnMemory.name === "Variance" && (
+                    <span className="font-semibold">
+                      {"Var: " + analytics.varianceMemory}
+                    </span>
+                  )}
+                </td>
+                <td className="min-w-max py-1.5 rounded my-2 px-4">
+                  {currFnGPU.name === "Average" && (
+                    <span className="font-semibold">
+                      {"Avg: " + analytics.avgGpu}
+                    </span>
+                  )}
+                  {currFnGPU.name === "Sum" && (
+                    <span className="font-semibold">
+                      {"Sum: " + analytics.sumGpu}
+                    </span>
+                  )}
+                  {currFnGPU.name === "Min" && (
+                    <span className="font-semibold">
+                      {"Min: " + analytics.minGpu}
+                    </span>
+                  )}
+                  {currFnGPU.name === "Max" && (
+                    <span className="font-semibold">
+                      {"Max: " + analytics.maxGpu}
+                    </span>
+                  )}
+                  {currFnGPU.name === "Count" && (
+                    <span className="font-semibold">
+                      {"Count: " + analytics.countGpu}
+                    </span>
+                  )}
+                  {currFnGPU.name === "Variance" && (
+                    <span className="font-semibold">
+                      {"Var: " + analytics.varianceGpu}
+                    </span>
+                  )}
+                </td>
               </tr>
               {groupColumn &&
                 // Render grouped data
@@ -220,6 +462,15 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
                             </td>
                           );
                         })}
+                        <td className="py-4 text-sm text-left text-gray-500 truncate cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+                          {row.jobSpec.computeSpecifications.cpu}
+                        </td>
+                        <td className="py-4 text-sm text-left text-gray-500 truncate cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+                          {row.jobSpec.computeSpecifications.memory}
+                        </td>
+                        <td className="py-4 text-sm text-left text-gray-500 truncate cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+                          {row.jobSpec.computeSpecifications.gpu}
+                        </td>
                       </Disclosure.Panel>
                     ))}
                   </Disclosure>
@@ -263,6 +514,15 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
                           </td>
                         );
                       })}
+                      <td className="py-4 text-sm text-left text-gray-500 truncate cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+                        {job.jobSpec.computeSpecifications.cpu}
+                      </td>
+                      <td className="py-4 text-sm text-left text-gray-500 truncate cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+                        {job.jobSpec.computeSpecifications.memory}
+                      </td>
+                      <td className="py-4 text-sm text-left text-gray-500 truncate cursor-pointer hover:bg-gray-100 whitespace-nowrap">
+                        {job.jobSpec.computeSpecifications.gpu}
+                      </td>
                     </tr>
                   );
                 })}
