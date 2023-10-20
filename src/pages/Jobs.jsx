@@ -135,11 +135,6 @@ function Jobs() {
       key: "project",
       type: "string",
     },
-    {
-      heading: "Creation Time",
-      key: "created",
-      type: "time",
-    },
   ]);
 
   const toggleHeading = (heading) => {
