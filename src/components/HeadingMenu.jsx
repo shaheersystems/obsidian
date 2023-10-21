@@ -10,6 +10,7 @@ export default function HeadingMenu({
   setAnalyticFn = () => {},
   type = "int",
 }) {
+  //
   const handleGroupColumn = (key) => {
     if (groupColumn === key) {
       setGroupColumn("");
