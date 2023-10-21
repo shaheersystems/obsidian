@@ -7,9 +7,9 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
   const [sortColumn, setSortColumn] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
   const [analytics, setAnalytics] = useState({});
-  const [currFnCPU, setCurrFnCPU] = useState({ name: "Average" });
-  const [currFnMemory, setCurrFnMemory] = useState({ name: "Average" });
-  const [currFnGPU, setCurrFnGPU] = useState({ name: "Average" });
+  const [currFnCPU, setCurrFnCPU] = useState({ name: "None" });
+  const [currFnMemory, setCurrFnMemory] = useState({ name: "None" });
+  const [currFnGPU, setCurrFnGPU] = useState({ name: "None" });
   const anaylticFunctions = [
     {
       name: "Average",
@@ -340,6 +340,9 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
                 })}
 
                 <td className="min-w-max py-1.5 rounded my-2 px-4">
+                  {currFnCPU.name === "None" && (
+                    <span className="px-4 py-2 font-semibold"></span>
+                  )}
                   {currFnCPU.name === "Average" && (
                     <span className="font-semibold">
                       {"Avg: " + analytics.avgCpu}
@@ -372,6 +375,9 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
                   )}
                 </td>
                 <td className="min-w-max py-1.5 rounded my-2 px-4">
+                  {currFnMemory.name === "None" && (
+                    <span className="font-semibold"></span>
+                  )}
                   {currFnMemory.name === "Average" && (
                     <span className="font-semibold">
                       {"Avg: " + analytics.avgMemory}
@@ -404,6 +410,9 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
                   )}
                 </td>
                 <td className="min-w-max py-1.5 rounded my-2 px-4">
+                  {currFnGPU.name === "None" && (
+                    <span className="font-semibold"></span>
+                  )}
                   {currFnGPU.name === "Average" && (
                     <span className="font-semibold">
                       {"Avg: " + analytics.avgGpu}
