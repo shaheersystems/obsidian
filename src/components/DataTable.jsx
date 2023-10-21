@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Disclosure } from "@headlessui/react";
 import GroupBySelect from "./GroupBySelect";
 import Dropdown from "./Dropdown";
+import HeadingMenu from "./HeadingMenu";
 function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
   const [sortColumn, setSortColumn] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
@@ -82,6 +83,9 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
   const [searchLastModified, setSearchLastModified] = useState("");
   const [searchLastModifiedBy, setSearchLastModifiedBy] = useState("");
   const [searchType, setSearchType] = useState("");
+  const [searchCPU, setSearchCPU] = useState("");
+  const [searchMemory, setSearchMemory] = useState("");
+  const [searchGPU, setSearchGPU] = useState("");
 
   const filterate = sortedData.filter((job) => {
     return (
@@ -96,7 +100,16 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
       job.lastModifiedBy
         .toLowerCase()
         .includes(searchLastModifiedBy.toLowerCase()) &&
-      job.type.toLowerCase().includes(searchType.toLowerCase())
+      job.type.toLowerCase().includes(searchType.toLowerCase()) &&
+      String(job.jobSpec.computeSpecifications.cpu)
+        .toLowerCase()
+        .includes(searchCPU.toLowerCase()) &&
+      String(job.jobSpec.computeSpecifications.memory)
+        .toLowerCase()
+        .includes(searchMemory.toLowerCase()) &&
+      String(job.jobSpec.computeSpecifications.gpu)
+        .toLowerCase()
+        .includes(searchGPU.toLowerCase())
     );
   });
 
@@ -192,14 +205,6 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
   }, {});
   return (
     <div className="flow-root mt-8">
-      <div className="flex items-center gap-4 py-4">
-        <span className="font-semibold">Group by: </span>
-        <GroupBySelect
-          setGroupColumn={setGroupColumn}
-          groupColumn={groupColumn}
-          columns={cloumns}
-        />
-      </div>
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
           <table className="relative min-w-full divide-y divide-gray-300">
@@ -207,46 +212,71 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
               <tr>
                 {selectedHeadings.map((heading, idx) => {
                   return (
-                    <th
-                      key={idx}
-                      scope="col"
-                      className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                    >
-                      <button
-                        className="flex items-center gap-2"
-                        onClick={() => handleSort(heading.key)}
-                      >
-                        {heading.heading}
-                        {sortColumn === heading.key && (
-                          <span>
-                            {sortDirection === "asc" ? (
-                              <span className="ml-1">▼</span>
-                            ) : (
-                              <span className="ml-1">▲</span>
-                            )}
-                          </span>
-                        )}
+                    <th>
+                      <button className="flex items-center gap-2">
+                        <span
+                          className="px-5"
+                          onClick={() => handleSort(heading.key)}
+                        >
+                          {heading.heading}
+                          {sortColumn === heading.key && (
+                            <span>
+                              {sortDirection === "asc" ? (
+                                <span className="ml-1">▼</span>
+                              ) : (
+                                <span className="ml-1">▲</span>
+                              )}
+                            </span>
+                          )}
+                        </span>
+                        {heading.heading !== "Status" &&
+                          heading.heading !== "Can Evict" && (
+                            <HeadingMenu
+                              analyticFns={anaylticFunctions}
+                              heading={heading}
+                              setGroupColumn={setGroupColumn}
+                              type="string"
+                              key={idx}
+                              scope="col"
+                              className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                            />
+                          )}
                       </button>
                     </th>
                   );
                 })}
-                <th
-                  scope="col"
-                  className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                >
-                  <span className="flex items-center gap-2">CPU</span>
+                <th>
+                  <button className="flex items-center gap-2">
+                    <span className="px-5">CPU</span>
+                    <HeadingMenu
+                      analyticFns={anaylticFunctions}
+                      setAnalyticFn={setCurrFnCPU}
+                      scope="col"
+                      className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                    />
+                  </button>
                 </th>
-                <th
-                  scope="col"
-                  className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                >
-                  <span className="flex items-center gap-2">Memory</span>
+                <th className="w-full">
+                  <button className="flex items-center w-full gap-2">
+                    <span className="px-5">Memory</span>
+                    <HeadingMenu
+                      analyticFns={anaylticFunctions}
+                      setAnalyticFn={setCurrFnMemory}
+                      scope="col"
+                      className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                    />
+                  </button>
                 </th>
-                <th
-                  scope="col"
-                  className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                >
-                  <span className="flex items-center gap-2">GPU</span>
+                <th>
+                  <button className="flex items-center gap-2">
+                    <span className="px-5">GPU</span>
+                    <HeadingMenu
+                      analyticFns={anaylticFunctions}
+                      setAnalyticFn={setCurrFnGPU}
+                      scope="col"
+                      className="py-3.5 truncate  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                    />
+                  </button>
                 </th>
               </tr>
             </thead>
@@ -285,24 +315,21 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
                   );
                 })}
                 <td>
-                  <Dropdown
-                    data={anaylticFunctions}
-                    selected={currFnCPU}
-                    setSelected={setCurrFnCPU}
+                  <input
+                    className="py-1.5 rounded border my-2 px-4"
+                    onChange={(e) => setSearchCPU(e.target.value)}
                   />
                 </td>
                 <td>
-                  <Dropdown
-                    data={anaylticFunctions}
-                    selected={currFnMemory}
-                    setSelected={setCurrFnMemory}
+                  <input
+                    className="py-1.5 rounded border my-2 px-4"
+                    onChange={(e) => setSearchMemory(e.target.value)}
                   />
                 </td>
                 <td>
-                  <Dropdown
-                    data={anaylticFunctions}
-                    selected={currFnGPU}
-                    setSelected={setCurrFnGPU}
+                  <input
+                    className="py-1.5 rounded border my-2 px-4"
+                    onChange={(e) => setSearchGPU(e.target.value)}
                   />
                 </td>
               </tr>
@@ -310,6 +337,7 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
                 {selectedHeadings.map((idx) => {
                   return <td key={idx}></td>;
                 })}
+
                 <td className="min-w-max py-1.5 rounded my-2 px-4">
                   {currFnCPU.name === "Average" && (
                     <span className="font-semibold">
