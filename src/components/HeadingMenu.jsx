@@ -1,14 +1,22 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 export default function HeadingMenu({
   heading = "",
   setGroupColumn = "",
+  groupColumn = "",
   analyticFns = [],
   setAnalyticFn = () => {},
   type = "int",
 }) {
+  const handleGroupColumn = (key) => {
+    if (groupColumn === "") {
+      setGroupColumn(key);
+    } else {
+      setGroupColumn("");
+    }
+  };
   return (
     <Menu as="span" className="relative inline-block text-left">
       <div>
@@ -29,10 +37,11 @@ export default function HeadingMenu({
           <Menu.Item as="span">
             {type === "string" && (
               <span
-                onClick={() => setGroupColumn(heading.key)}
+                onClick={() => handleGroupColumn(heading.key)}
                 className="block w-full px-6 py-2 bg-white rounded hover:bg-gray-900 hover:text-white"
               >
-                Group By {heading.key}
+                {groupColumn === "" ? "Group By " : "Ungroup By "}
+                {heading.heading}
               </span>
             )}
 
