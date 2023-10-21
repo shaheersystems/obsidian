@@ -11,10 +11,10 @@ export default function HeadingMenu({
   type = "int",
 }) {
   const handleGroupColumn = (key) => {
-    if (groupColumn === "") {
-      setGroupColumn(key);
-    } else {
+    if (groupColumn === key) {
       setGroupColumn("");
+    } else {
+      setGroupColumn(key);
     }
   };
   return (
@@ -40,7 +40,7 @@ export default function HeadingMenu({
                 onClick={() => handleGroupColumn(heading.key)}
                 className="block w-full px-6 py-2 bg-white rounded hover:bg-gray-900 hover:text-white"
               >
-                {groupColumn === "" ? "Group By " : "Ungroup By "}
+                {groupColumn === heading.key ? "Ungroup By " : "Group By "}
                 {heading.heading}
               </span>
             )}
