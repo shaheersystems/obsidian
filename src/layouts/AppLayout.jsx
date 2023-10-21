@@ -1,17 +1,3 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 import { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
@@ -23,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Link, useLocation } from "react-router-dom";
-import Dropdown from "../components/Dropdown";
+import { Disclosure } from "@headlessui/react";
 import { useCluster } from "../context/ClusterContext";
 
 const navigation = [
@@ -183,43 +169,49 @@ export default function AppLayout({ children }) {
                   </ul>
                 </li>
               </ul>
-              <p className="pt-2 text-sm font-semibold text-gray-300">
-                Clusters
-              </p>
-              <ul>
-                <li>
-                  <ul role="list" className="-mx-2 space-y-1">
+              <Disclosure>
+                <Disclosure.Button as="p">
+                  <p className="pt-2 text-sm font-semibold text-gray-300 cursor-pointer">
+                    Clusters
+                  </p>
+                </Disclosure.Button>
+                <Disclosure.Panel>
+                  <ul>
                     <li>
-                      <button
-                        onClick={() => setCluster("")}
-                        className={classNames(
-                          cluster === ""
-                            ? "bg-gray-800 text-white"
-                            : "text-gray-400 hover:text-white hover:bg-gray-800",
-                          "group px-4 w-full flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                        )}
-                      >
-                        All
-                      </button>
+                      <ul role="list" className="-mx-2 space-y-1">
+                        <li>
+                          <button
+                            onClick={() => setCluster("")}
+                            className={classNames(
+                              cluster === ""
+                                ? "bg-gray-800 text-white"
+                                : "text-gray-400 hover:text-white hover:bg-gray-800",
+                              "group px-4 w-full flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                            )}
+                          >
+                            All
+                          </button>
+                        </li>
+                        {clusters.map((item) => (
+                          <li key={item.clusterId}>
+                            <button
+                              onClick={() => setCluster(item.clusterId)}
+                              className={classNames(
+                                item.clusterId === cluster
+                                  ? "bg-gray-800 text-white"
+                                  : "text-gray-400 hover:text-white hover:bg-gray-800",
+                                "group w-full px-4 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                              )}
+                            >
+                              {item.clusterId}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
                     </li>
-                    {clusters.map((item) => (
-                      <li key={item.clusterId}>
-                        <button
-                          onClick={() => setCluster(item.clusterId)}
-                          className={classNames(
-                            item.clusterId === cluster
-                              ? "bg-gray-800 text-white"
-                              : "text-gray-400 hover:text-white hover:bg-gray-800",
-                            "group w-full px-4 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                          )}
-                        >
-                          {item.clusterId}
-                        </button>
-                      </li>
-                    ))}
                   </ul>
-                </li>
-              </ul>
+                </Disclosure.Panel>
+              </Disclosure>
             </nav>
           </div>
         </div>
