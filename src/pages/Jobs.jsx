@@ -138,7 +138,6 @@ function Jobs() {
   ]);
 
   const toggleHeading = (heading) => {
-    // Check if the heading is already in the selectedHeadings array
     const headingIndex = selectedHeadings.findIndex(
       (selected) => selected.key === heading.key
     );
@@ -147,7 +146,6 @@ function Jobs() {
       // If not found, add the heading to selectedHeadings
       setSelectedHeadings([...selectedHeadings, heading]);
     } else {
-      // If found, remove the heading from selectedHeadings
       const updatedSelectedHeadings = [...selectedHeadings];
       updatedSelectedHeadings.splice(headingIndex, 1);
       setSelectedHeadings(updatedSelectedHeadings);
