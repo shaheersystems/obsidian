@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Disclosure } from "@headlessui/react";
-import GroupBySelect from "./GroupBySelect";
-import Dropdown from "./Dropdown";
 import HeadingMenu from "./HeadingMenu";
 function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
   const [sortColumn, setSortColumn] = useState("");
@@ -31,17 +29,6 @@ function DataTable({ jobs, selectedHeadings, setCurrentJob, setOpenDrawer }) {
     },
   ];
 
-  const cloumns = [
-    "",
-    "jobId",
-    "name",
-    "createdBy",
-    "project",
-    "created",
-    "lastModified",
-    "lastModifiedBy",
-    "type",
-  ];
   const handleSort = (key) => {
     setGroupColumn("");
     if (key === sortColumn) {

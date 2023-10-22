@@ -45,6 +45,14 @@ export default function HeadingMenu({
                 {heading.heading}
               </span>
             )}
+            {type === "int" && (
+              <span
+                onClick={() => setAnalyticFn({ name: "None" })}
+                className="block w-full px-6 py-2 bg-white rounded hover:bg-gray-900 hover:text-white"
+              >
+                Clear
+              </span>
+            )}
 
             {type === "int" &&
               analyticFns.map((fn) => (
